@@ -123,6 +123,34 @@ class SoundManager {
       // ignore
     }
   }
+
+  // Kitchen timer bell ring
+  playBellRing() {
+    try {
+      const ctx = this.getContext();
+      if (!ctx) return;
+
+      [0, 0.25, 0.5].forEach((offset) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime + offset); // A5
+        osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + offset + 0.1);
+
+        gain.gain.setValueAtTime(0.18, ctx.currentTime + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + offset + 0.25);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(ctx.currentTime + offset);
+        osc.stop(ctx.currentTime + offset + 0.25);
+      });
+    } catch {
+      // ignore
+    }
+  }
 }
 
 export const sound = new SoundManager();

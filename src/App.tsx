@@ -13,6 +13,11 @@ import { CartDrawer } from './components/customer/CartDrawer';
 import { CheckoutModal } from './components/customer/CheckoutModal';
 import { DriverRatingModal } from './components/customer/DriverRatingModal';
 import { LiveChatDrawer } from './components/chat/LiveChatDrawer';
+import { FloatingAIAssistant } from './components/common/FloatingAIAssistant';
+import { OrderTogetherModal } from './components/customer/OrderTogetherModal';
+import { PremiumTablesModal } from './components/customer/PremiumTablesModal';
+import { LunchSubscriptionModal } from './components/customer/LunchSubscriptionModal';
+import { CookingChefModal } from './components/customer/CookingChefModal';
 import { DriverApp } from './components/driver/DriverApp';
 import { MerchantApp } from './components/merchant/MerchantApp';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -52,6 +57,19 @@ const MainLayout: React.FC = () => {
   const [driverTab, setDriverTab] = useState<'trips' | 'radar' | 'earnings' | 'shift'>('trips');
   const [merchantTab, setMerchantTab] = useState<'kitchen' | 'menu' | 'sales' | 'store'>('kitchen');
   const [adminTab, setAdminTab] = useState<'overview' | 'orders' | 'couriers' | 'merchants'>('overview');
+
+  // Smart Modals state triggerable from Floating AI Assistant
+  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
+  const [isOrderTogetherOpen, setIsOrderTogetherOpen] = useState(false);
+  const [isPremiumTablesOpen, setIsPremiumTablesOpen] = useState(false);
+  const [isLunchSubOpen, setIsLunchSubOpen] = useState(false);
+  const [isCookingChefOpen, setIsCookingChefOpen] = useState(false);
+  const [cookingChefInitialDish, setCookingChefInitialDish] = useState<string | undefined>(undefined);
+
+  const handleOpenCookingChef = (dishName?: string) => {
+    setCookingChefInitialDish(dishName);
+    setIsCookingChefOpen(true);
+  };
 
   const handleSelectStore = (store: Store) => {
     setSelectedStore(store);
@@ -192,6 +210,8 @@ const MainLayout: React.FC = () => {
                     <CustomerHome
                       onSelectStore={handleSelectStore}
                       onOpenTracking={handleOpenTracking}
+                      onOpenAIAssistant={() => setIsAIAssistantOpen(true)}
+                      onOpenCookingChef={handleOpenCookingChef}
                     />
                   )}
                   {customerTab === 'search' && (
@@ -289,6 +309,45 @@ const MainLayout: React.FC = () => {
           onClose={() => setRatingModalOrderId(null)}
         />
       )}
+
+      {/* Persistent Floating AI Personal Assistant (Grounded in application catalog) */}
+      {role === 'customer' && customerDetailView !== 'tracking' && (
+        <FloatingAIAssistant
+          onSelectStore={handleSelectStore}
+          onOpenOrderTogether={() => setIsOrderTogetherOpen(true)}
+          onOpenTableBooking={() => setIsPremiumTablesOpen(true)}
+          onOpenLunchSub={() => setIsLunchSubOpen(true)}
+          onOpenCookingChef={handleOpenCookingChef}
+          externalIsOpen={isAIAssistantOpen}
+          onExternalOpenChange={setIsAIAssistantOpen}
+        />
+      )}
+
+      {/* Modals triggered from Floating AI Assistant */}
+      <OrderTogetherModal
+        isOpen={isOrderTogetherOpen}
+        onClose={() => setIsOrderTogetherOpen(false)}
+        onSelectStore={handleSelectStore}
+      />
+
+      <PremiumTablesModal
+        isOpen={isPremiumTablesOpen}
+        onClose={() => setIsPremiumTablesOpen(false)}
+      />
+
+      <LunchSubscriptionModal
+        isOpen={isLunchSubOpen}
+        onClose={() => setIsLunchSubOpen(false)}
+      />
+
+      <CookingChefModal
+        isOpen={isCookingChefOpen}
+        onClose={() => {
+          setIsCookingChefOpen(false);
+          setCookingChefInitialDish(undefined);
+        }}
+        initialDishName={cookingChefInitialDish}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 {
   "name": "GO BAZAR Delivery Platform",
-  "description": "منصة جو بازار المتكاملة للتوصيل الفوري: تتبع لحظي للطلبات، أقسام المطاعم والبقالة، تطبيقات السائق والتاجر والإدارة، دردشة مباشرة ودفع إلكتروني آمن.",
+  "description": "منصة جو بازار المتكاملة للتوصيل الفوري: مساعد الطبخ الذكي وشراء المكونات الناقصة، ميزة Order Together للطلب الجماعي بنطاق 1 كم، مساعد الذكاء الاصطناعي العائم، تتبع لحظي، واشتراكات الغداء.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

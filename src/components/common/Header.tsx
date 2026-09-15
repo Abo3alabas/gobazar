@@ -78,12 +78,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCart }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
       {/* Top Banner Notice for Multi-Role Switching Experience */}
-      <div className="bg-emerald-800 text-emerald-50 px-4 py-1 text-xs font-medium text-center flex items-center justify-center gap-2">
-        <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="bg-emerald-800 text-emerald-100 px-4 py-1 text-[11px] font-bold text-center flex items-center justify-center gap-1.5 border-b border-emerald-700/50">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
         <span>
           {isRtl
-            ? '🚀 بيئة متكاملة لجميع الأطراف: يمكنك التنقل بين تطبيقات (العميل، السائق، المتجر، الإدارة) من الشريط العلوي لتجربة تفاعلية حية'
-            : '🚀 Live Multi-Role Ecosystem: Switch between Customer, Driver, Merchant & Admin apps in real-time'}
+            ? '🚀 تجربة متعددة الأدوار: بدّل بين (العميل • السائق • المتجر • الإدارة) من الشريط العلوي'
+            : '🚀 Multi-Role Platform: Switch between Customer, Driver, Merchant & Admin at any time'}
         </span>
       </div>
 

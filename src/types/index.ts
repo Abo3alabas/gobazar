@@ -230,3 +230,162 @@ export interface PromoCode {
   maxDiscount: number;
   minOrder: number;
 }
+
+export interface GroupOrderMember {
+  id: string;
+  name: string;
+  phone?: string;
+  items: CartItem[];
+  subtotal: number;
+  deliveryShare: number;
+  isHost?: boolean;
+  paid?: boolean;
+}
+
+export interface GroupOrderSession {
+  id: string;
+  code: string;
+  hostName: string;
+  hostPhone: string;
+  hostAddress: string;
+  radiusKm: number; // 1 km radius
+  storeId: string;
+  storeNameAr: string;
+  storeNameEn: string;
+  status: 'open' | 'locked' | 'ordered';
+  members: GroupOrderMember[];
+  deliveryFee: number;
+  total: number;
+  expiresAt: string;
+}
+
+export interface AIConciergeRecommendation {
+  title: string;
+  summary: string;
+  reason: string;
+  recommendedItem: {
+    productId: string;
+    productName: string;
+    storeId: string;
+    storeName: string;
+    price: number;
+    deliveryFee: number;
+    totalPrice: number;
+    deliveryTimeMin: number;
+    calories?: number;
+    image: string;
+  };
+  alternativeItem?: {
+    productName: string;
+    storeName: string;
+    priceDiff: string;
+    reason: string;
+  };
+  confidenceScore: number;
+}
+
+export interface SmartWalkInPickup {
+  orderId: string;
+  pickupCode: string;
+  readyInMinutes: number;
+  savedMinutes: number; // e.g. 18 mins
+  storeAddress: string;
+  canQuickModifyUntil: number; // timestamp for 60s grace window
+}
+
+export interface FoodGiftCard {
+  id: string;
+  senderName: string;
+  recipientName: string;
+  recipientPhone: string;
+  amount: number;
+  message: string;
+  voucherCode: string;
+  theme: 'birthday' | 'thank_you' | 'love' | 'friendship';
+  claimed: boolean;
+  createdAt: string;
+}
+
+export interface LunchCalendarDay {
+  dayNumber: number;
+  date: string;
+  dishName: string;
+  storeName: string;
+  image: string;
+  category: string;
+  calories: number;
+}
+
+export interface LunchSubscription {
+  id: string;
+  planName: string;
+  totalDays: number;
+  remainingDays: number;
+  dailyPrice: number;
+  totalPrice: number;
+  preferredTime: string;
+  deliveryAddress: string;
+  todayMeal: {
+    date: string;
+    dishName: string;
+    storeName: string;
+    image: string;
+    calories: number;
+    status: 'pending_approval' | 'approved' | 'dispatched' | 'swapped';
+  };
+  calendar: LunchCalendarDay[];
+}
+
+export interface PremiumTableBooking {
+  id: string;
+  storeId: string;
+  storeName: string;
+  customerName: string;
+  customerPhone: string;
+  date: string;
+  timeSlot: string;
+  guestsCount: number;
+  seatingArea: 'terrace' | 'vip_lounge' | 'romantic_corner' | 'panoramic';
+  preOrderItems?: CartItem[];
+  bookingCode: string;
+  status: 'confirmed' | 'seated' | 'completed';
+}
+
+// 13. SMART COOKING & RECIPES
+export interface RecipeIngredient {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  amount: string;
+  isAvailable: boolean; // toggleable by user (✅ or ❌)
+  matchedProductId?: string; // supermarket product ID
+  supermarketPrice?: number;
+  supermarketProductNameAr?: string;
+  supermarketProductNameEn?: string;
+  supermarketProductImage?: string;
+}
+
+export interface RecipeStep {
+  stepNumber: number;
+  instructionAr: string;
+  instructionEn: string;
+  timerMinutes?: number;
+  tipAr?: string;
+  tipEn?: string;
+}
+
+export interface CookingRecipe {
+  id: string;
+  dishNameAr: string;
+  dishNameEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  cookingTimeMinutes: number;
+  difficultyAr: 'سهل' | 'متوسط' | 'شيف';
+  difficultyEn: 'Easy' | 'Medium' | 'Chef';
+  servings: number;
+  approximateCost: number; // in Euros
+  image: string;
+  ingredients: RecipeIngredient[];
+  steps: RecipeStep[];
+}
